@@ -2,7 +2,7 @@ local gui = {
 	m_tRegisteredSkins = {},
 	m_pWorldPanel = nil,
 	m_pFocusedPanel = nil,
-	m_strSkin = "default",
+	m_strSkin = "testskin",
 }
 
 DOCK_NONE = 0

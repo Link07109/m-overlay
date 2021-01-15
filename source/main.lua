@@ -25,7 +25,7 @@ local PORT_FONT = graphics.newFont("fonts/melee-bold.otf", 42)
 local WAITING_FONT = graphics.newFont("fonts/melee-bold.otf", 24)
 local DEBUG_FONT = graphics.newFont("fonts/melee-bold.otf", 12)
 
-local VERSION = love.filesystem.read("version.txt")
+local VERSION = 20.21 --love.filesystem.read("version.txt")
 
 function love.getMOverlayVersion()
 	return VERSION or "0.0.0"
@@ -244,8 +244,8 @@ local BUTTON_TEXTURES = {
 		GATE = newImage("textures/buttons/d-pad-gate.png"),
 		GATE_FILLED = newImage("textures/buttons/d-pad-gate-filled.png"),
 		POSITION = {
-			x = 100,
-			y = 128,
+			x = 108,
+			y = 144,
 		},
 	},
 
@@ -253,8 +253,8 @@ local BUTTON_TEXTURES = {
 		PRESSED = newImage("textures/buttons/d-pad-pressed-left.png"),
 
 		POSITION = {
-			x = 108,
-			y = 144,
+			x = 198 + 35,
+			y = 144 - 60 - 30,
 		},
 	},
 
@@ -262,8 +262,8 @@ local BUTTON_TEXTURES = {
 		PRESSED = newImage("textures/buttons/d-pad-pressed-right.png"),
 
 		POSITION = {
-			x = 108,
-			y = 144,
+			x = 198 + 35,
+			y = 144 - 60 - 30,
 		},
 	},
 
@@ -271,8 +271,8 @@ local BUTTON_TEXTURES = {
 		PRESSED = newImage("textures/buttons/d-pad-pressed-up.png"),
 
 		POSITION = {
-			x = 108,
-			y = 144,
+			x = 198 + 35,
+			y = 144 - 60 - 30,
 		},
 	},
 
@@ -280,8 +280,8 @@ local BUTTON_TEXTURES = {
 		PRESSED = newImage("textures/buttons/d-pad-pressed-down.png"),
 
 		POSITION = {
-			x = 108,
-			y = 144,
+			x = 198 + 35,
+			y = 144 - 60 - 30,
 		},
 	},
 
@@ -295,28 +295,28 @@ local BUTTON_TEXTURES = {
 	CSTICK = {
 		GATE = newImage("textures/buttons/c-stick-gate.png"),
 		GATE_FILLED = newImage("textures/buttons/c-stick-gate-filled.png"),
-		MASK = newImage("textures/buttons/c-stick-mask.png"),
-		STICK = newImage("textures/buttons/c-stick.png"),
+		MASK = newImage("textures/buttons/c-stick-filled.png"),
+		STICK = newImage("textures/buttons/c-stick-filled.png"),
 		FILLED = newImage("textures/buttons/c-stick-filled.png"),
 	},
 	A = {
 		OUTLINE = newImage("textures/buttons/a-outline.png"),
 		FILLED = newImage("textures/buttons/a-filled.png"),
 		PRESSED = newImage("textures/buttons/a-pressed.png"),
-		COLOR = color(0, 225, 150, 255),
+		COLOR = color(114, 246, 115, 255),
 		POSITION = {
-			x = 12 + 64 + 256,
-			y = 48
+			x = 12 + 64 + 256 + 30,
+			y = 43 + 8
 		}
 	},
 	B = {
 		OUTLINE = newImage("textures/buttons/b-outline.png"),
 		FILLED = newImage("textures/buttons/b-filled.png"),
 		PRESSED = newImage("textures/buttons/b-pressed.png"),
-		COLOR = color(230, 0, 0, 255),
+		COLOR = color(233, 114, 140, 255),
 		POSITION = {
-			x = 16 + 256,
-			y = 92
+			x = 16 + 256 + 30,
+			y = 74
 		}
 	},
 	X = {
@@ -325,8 +325,8 @@ local BUTTON_TEXTURES = {
 		PRESSED = newImage("textures/buttons/x-pressed.png"),
 		COLOR = color(255, 255, 255, 255),
 		POSITION = {
-			x = 138 + 256,
-			y = 32
+			x = 138 + 253 + 30 + 1,
+			y = 32 + 6
 		}
 	},
 	Y = {
@@ -335,28 +335,27 @@ local BUTTON_TEXTURES = {
 		PRESSED = newImage("textures/buttons/y-pressed.png"),
 		COLOR = color(255, 255, 255, 255),
 		POSITION = {
-			x = 60 + 256,
-			y = -16
+			x = 60 + 256 + 30 + 2,
+			y = -16 + 8
 		}
 	},
 	Z = {
 		OUTLINE = newImage("textures/buttons/z-outline.png"),
 		FILLED = newImage("textures/buttons/z-filled.png"),
 		PRESSED = newImage("textures/buttons/z-pressed.png"),
-		COLOR = color(165, 75, 165, 255),
+		COLOR = color(118, 105, 205, 255),
 		POSITION = {
-			x = 128 + 256,
-			y = -32
+			x = 128 + 256 + 30 - 7 - 2,
+			y = -32 + 5 + 3
 		}
 	},
 	START = {
 		OUTLINE = newImage("textures/buttons/start-outline.png"),
-		FILLED = newImage("textures/buttons/start-filled.png"),
 		PRESSED = newImage("textures/buttons/start-pressed.png"),
 		COLOR = color(255, 255, 255, 255),
 		POSITION = {
 			x = 256,
-			y = 26
+			y = -25 + 3
 		}
 	}
 }
@@ -485,8 +484,8 @@ function love.drawControllerOverlay()
 		local angle = math.atan2(x, y)
 		local mag = math.sqrt(x*x + y*y)
 
-		local far = mag * 12
-		local near = mag * 20
+		local far = mag
+		local near = mag
 
 		-- Make the rectangle look like its fading into the horizon
 
@@ -500,12 +499,12 @@ function love.drawControllerOverlay()
 		-- Bottom right
 		vertices[2][2] = near
 
-		local rotated = transformVertices(vertices, 64 + 22 + (40 * vx), 64 + 12 + (40 * vy), angle, 64, 64)
+		local rotated = transformVertices(vertices, 64 + 22 + (25 * vx) - 10, 64 + 22 - 5 + (25 * vy), angle, 64, 64)
 
 		graphics.setColor(255, 255, 255, 255)
 
 		if PANEL_SETTINGS:IsHighContrast() then
-			graphics.easyDraw(BUTTON_TEXTURES.JOYSTICK.GATE_FILLED, 22, 52, 0, 128, 128)
+			graphics.easyDraw(BUTTON_TEXTURES.JOYSTICK.GATE_FILLED, 22 - 10, 42, 0, 128, 128)
 		else
 			graphics.stencil(function()
 				perspective.on()
@@ -513,7 +512,7 @@ function love.drawControllerOverlay()
 				perspective.off()
 			end, "replace", 1)
 			graphics.setStencilTest("equal", 0) -- Mask out the gate behind the joystick
-				graphics.easyDraw(BUTTON_TEXTURES.JOYSTICK.GATE, 22, 52, 0, 128, 128)
+				graphics.easyDraw(BUTTON_TEXTURES.JOYSTICK.GATE, 22 - 10, 42, 0, 128, 128)
 			graphics.setStencilTest()
 		end
 
@@ -544,8 +543,8 @@ function love.drawControllerOverlay()
 		local angle = math.atan2(x, y)
 		local mag = math.sqrt(x*x + y*y)
 
-		local far = mag * 12
-		local near = mag * 20
+		local far = mag
+		local near = mag
 
 		-- Make the rectangle look like its fading into the horizon
 
@@ -559,12 +558,12 @@ function love.drawControllerOverlay()
 		-- Bottom right
 		vertices[2][2] = near
 
-		local rotated = transformVertices(vertices, 64 + 48 + 128 + (32 * vx), 64 + 18 + (32 * vy), angle, 64, 64)
+		local rotated = transformVertices(vertices, 64 + 48 + 128 + (32 * vx) - 30 - 10, 64 + 18 - 10 + (32 * vy) + 3, angle, 64, 64)
 
-		graphics.setColor(255, 235, 0, 255)
+		graphics.setColor(255, 222, 111, 255)
 
 		if PANEL_SETTINGS:IsHighContrast() then
-			graphics.easyDraw(BUTTON_TEXTURES.CSTICK.GATE_FILLED, 48 + 128, 52, 0, 128, 128)
+			graphics.easyDraw(BUTTON_TEXTURES.CSTICK.GATE_FILLED, 48 + 128 - 30 - 10, 42 + 3, 0, 128, 128)
 		else
 			graphics.stencil(function()
 				perspective.on()
@@ -572,7 +571,7 @@ function love.drawControllerOverlay()
 				perspective.off()
 			end, "replace", 1)
 			graphics.setStencilTest("equal", 0) -- Mask out the gate behind the joystick
-				graphics.easyDraw(BUTTON_TEXTURES.CSTICK.GATE, 48 + 128, 52, 0, 128, 128)
+				graphics.easyDraw(BUTTON_TEXTURES.CSTICK.GATE, 48 + 128 - 30 - 10, 42 + 3, 0, 128, 128)
 			graphics.setStencilTest()
 		end
 
@@ -636,52 +635,52 @@ function love.drawControllerOverlay()
 			-- Draw L
 
 			-- Draw outline
-			graphics.easyDraw(PANEL_SETTINGS:IsHighContrast() and ANALOG_FILLED or ANALOG, 24 + 6, 14, 0, 116, 24)
+			graphics.easyDraw(PANEL_SETTINGS:IsHighContrast() and ANALOG_FILLED or ANALOG, 24 + 6 - 10, 14, 0, 116, 31)
 			-- Draw segment for button press
-			graphics.line(24 + 14 + 88, 20, 24 + 14 + 88, 20 + 12)
+			graphics.line(24 + 14 + 88 - 10, 20, 24 + 14 + 88 - 10, 20 + 17)
 
 			graphics.stencil(function()
 				-- Create a rounded rectangle mask
-				graphics.rectangle("fill", 24 + 14, 20, 100, 12, 6, 6)
+				graphics.rectangle("fill", 24 + 14 - 10, 20 + 3, 100, 12, 6, 6)
 			end, "replace", 1)
 			graphics.setStencilTest("greater", 0) -- Only draw within our rounded rectangle mask
 		 		-- L Button
 				if bit.band(controller.buttons.pressed, BUTTONS.L) == BUTTONS.L then
-					graphics.rectangle("fill", 24 + 14 + 88, 20, 12, 12)
+					graphics.rectangle("fill", 24 + 14 + 88 - 10, 20 + 3, 12, 12)
 					al = 1
 				end
 
 				-- L Analog
-				graphics.rectangle("fill", 24 + 14, 20, 88 * al, 12)
+				graphics.rectangle("fill", 24 + 14 - 10, 20 + 3, 88 * al, 12)
 			graphics.setStencilTest()
 
 			-- Draw R
 
 			-- Draw outline
-			graphics.easyDraw(PANEL_SETTINGS:IsHighContrast() and ANALOG_FILLED or ANALOG, 48 + 128 + 6, 14, 0, 116, 24)
+			graphics.easyDraw(PANEL_SETTINGS:IsHighContrast() and ANALOG_FILLED or ANALOG, 48 + 128 + 6 - 30 - 10, 14, 0, 116, 31)
 			-- Draw segment for button press
-			graphics.line(48 + 128 + 14 + 12, 20, 48 + 128 + 14 + 12, 20 + 12)
+			graphics.line(48 + 128 + 14 + 12 - 30 - 10, 20, 48 + 128 + 14 + 12 - 30 - 10, 20 + 17)
 
 			graphics.stencil(function()
 				-- Create a rounded rectangle mask
-				graphics.rectangle("fill", 48 + 128 + 14, 20, 100, 12, 6, 6)
+				graphics.rectangle("fill", 48 + 128 + 14 - 30 - 10, 20 + 3, 100, 12, 6, 6)
 			end, "replace", 1)
 			graphics.setStencilTest("greater", 0) -- Only draw within our rounded rectangle mask
 				-- R Button
 				if bit.band(controller.buttons.pressed, BUTTONS.R) == BUTTONS.R then
-					graphics.rectangle("fill", 48 + 128 + 14, 20, 12, 12)
+					graphics.rectangle("fill", 48 + 128 + 14 - 30 - 10, 20 + 3, 12, 12)
 					ar = 1
 				end
 
 				-- R Analog
-				graphics.rectangle("fill", 48 + 128 + 14 + 12 + (88 * (1 - ar)), 20, 88 * ar, 12)
+				graphics.rectangle("fill", 48 + 128 + 14 + 12 + (88 * (1 - ar)) - 30 - 10, 20 + 3, 88 * ar, 12)
 			graphics.setStencilTest()
 		end
 
 		-- Draw buttons
 
 		if PANEL_SETTINGS:IsDPadEnabled() then
-			graphics.easyDraw(PANEL_SETTINGS:IsHighContrast() and BUTTON_TEXTURES.DPAD.GATE_FILLED or BUTTON_TEXTURES.DPAD.GATE, 108, 144, 0, 128, 128)
+			graphics.easyDraw(PANEL_SETTINGS:IsHighContrast() and BUTTON_TEXTURES.DPAD.GATE_FILLED or BUTTON_TEXTURES.DPAD.GATE, 198 + 35, 144 - 60 - 30, 0, 128, 128)
 			drawButtons(DPAD, controller)
 		end
 
